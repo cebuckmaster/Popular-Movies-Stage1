@@ -1,4 +1,4 @@
-# popular-movies-stage1
+# Popular-Movies-Stage1
 Udacity Android Developer NanoDegree Program - Project 1 - Popular Movie Stage 1 App
 
 This application uses an API to themoviedb.org.
