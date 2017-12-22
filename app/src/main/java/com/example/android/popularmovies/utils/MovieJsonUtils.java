@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by cebuc on 12/16/2017.
+ * This is used to break down the json data from themovidedb.org api into an ArrayList of PolularMovies.
  */
 
 public class MovieJsonUtils {

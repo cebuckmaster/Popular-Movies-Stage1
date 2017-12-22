@@ -2,14 +2,20 @@ package com.example.android.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.popularmovies.data.PopularMovie;
 import com.squareup.picasso.Picasso;
 
+/**
+ * This is the Detail Activity Method to display an individual Movie.  This is started by an
+ * intent from the main activity which provides this activity the movie that was clicked on in a parcelable Object.
+ */
 public class MovieDetailActivity extends AppCompatActivity {
 
     private TextView mDetailMovieTitle;
@@ -40,5 +46,22 @@ public class MovieDetailActivity extends AppCompatActivity {
             mDetailReleaseDate.setText(movie.getReleaseDate());
             mDetailOverview.setText(movie.getOverview());
         }
+    }
+
+    /**
+     *    This override is used to change the function of the Up action when pressed.  We dont want the main activity
+     *    to call the API again and revert back to the default sort order.  This changes the Up action to be the same as
+     *    back pressed so the main activity isnt rebuilt.
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

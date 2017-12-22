@@ -11,7 +11,9 @@ import java.net.URL;
 import java.util.Scanner;
 
 /**
- * Created by cebuc on 12/16/2017.
+ * These utilities are used to access the Network.  The first method is to build the URL needed to call
+ * themoviedb.org API.  The second method gets the response from the site into an InputStream and returns
+ * it as a json String.
  */
 
 public class NetworkUtils {
@@ -23,7 +25,7 @@ public class NetworkUtils {
     private static String mMovieBaseUrl;
 
     final static String API_PARAM = "api_key";
-    final static String API_KEY = "????";  //REMOVE BEFORE SUBMIT //MUST SUPPLY YOUR OWN KEY
+    final static String API_KEY = "????";  //MUST SUPPLY YOUR OWN KEY
 
     public static URL buildUrl(String sortOrder) {
 

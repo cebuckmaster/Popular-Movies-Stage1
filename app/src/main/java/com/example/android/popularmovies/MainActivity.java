@@ -49,7 +49,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setAdapter(mMovieAdapter);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-
+        /**
+         * This checks the savedInstanceState on Activity screen change.  If movies is already loaded
+         * then we dont want to call the API again we just want to use the movies from the parcalArraylist
+         * to load the recyclerview.
+         */
         if(savedInstanceState == null || !savedInstanceState.containsKey("Movies")) {
             mMovies = null;
             loadMovieData();
@@ -60,17 +64,29 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
+    /**
+     * This method calls showMovieData() then run the AsycnTask to load the data from the API.
+     */
     private void loadMovieData() {
         showMovieData();
         new FetchMovieDataTask().execute();
     }
 
+    //used to save the ArrayList on screen change so that we can just refresh the data instead of calling API.
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList("Movies", mMovies);
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * This method is called when a movie is selected from the parent screen.  This method uses
+     * and Intent to call the detail activity to display information about a single movie.  It
+     * uses parcelables to pass the movie data to the detail activity.
+     * @param movie - object holding the information about the movie that was selected
+     *
+     *
+     */
     @Override
     public void onClick(PopularMovie movie) {
         Context context = this;
@@ -90,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mErrorMessage.setVisibility(View.VISIBLE);
     }
 
+    // This is the AsyncTask to call the Internet API and get the movie data.
     public class FetchMovieDataTask extends AsyncTask<String, Void, ArrayList<PopularMovie>> {
 
         @Override
@@ -98,11 +115,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             mLoadingIndicator.setVisibility(View.VISIBLE);
         }
 
+
         @Override
         protected ArrayList<PopularMovie> doInBackground(String... params) {
 
+            //This builds the URL needed to call the moviedb.org API
             URL movieRequestUrl = NetworkUtils.buildUrl(mSortOrder);
 
+            //This grabs the jsonMovieresponse and then breakd down the data into an Arraylist of objects called mMovies.
             try {
                 String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
                 mMovies = MovieJsonUtils.getMovieTitlesFromJson(jsonMovieResponse);
@@ -113,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             }
         }
 
+        //Once the data is loaded it load the recyclerview adapter with the arraylist of movies.
         @Override
         protected void onPostExecute(ArrayList<PopularMovie> movies) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
@@ -125,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
+    //This inflates the Menu to show the Sort Order Options
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -132,6 +154,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return true;
     }
 
+
+    //Based on the selected Sort Order it reloads the movie data by calling loadMovieData() method.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

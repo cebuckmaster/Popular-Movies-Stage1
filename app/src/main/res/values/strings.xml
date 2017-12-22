@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">PopularMovies</string>
 
+    <string name="movie_title_label">Movie Title</string>
     <string name="release_date_label">Release Date - </string>
     <string name="user_rating_label">User Rating - </string>
     <string name="error_message">An error has occurred. Please try again!!</string>
